@@ -8,6 +8,6 @@ import java.util.List;
 public interface QuestionAnswerService {
 
     List<QuestionGeneratorDto> save(List<QuestionGeneratorResponse> response);
-    void update(Long quizId, List<Long> questionAnswerIds);
+    List<QuestionGeneratorDto> getAllQuestionAnswers();
 
 }

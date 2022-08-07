@@ -1,16 +1,17 @@
 package hr.tvz.hanzekovic.questiongenerator.mapper.impl;
 
 import hr.tvz.hanzekovic.questiongenerator.domain.Distractor;
-import hr.tvz.hanzekovic.questiongenerator.domain.QuestionAnswer;
 import hr.tvz.hanzekovic.questiongenerator.domain.Quiz;
+import hr.tvz.hanzekovic.questiongenerator.domain.QuizQuestionAnswer;
 import hr.tvz.hanzekovic.questiongenerator.dto.QuestionGeneratorDto;
 import hr.tvz.hanzekovic.questiongenerator.dto.QuizDto;
-import hr.tvz.hanzekovic.questiongenerator.form.QuizForm;
+import hr.tvz.hanzekovic.questiongenerator.form.CreateQuizForm;
 import hr.tvz.hanzekovic.questiongenerator.mapper.QuizMapper;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 public class QuizMapperImpl implements QuizMapper {
 
     @Override
-    public Quiz toEntity(final QuizForm form) {
+    public Quiz toEntity(final CreateQuizForm form) {
         if (Objects.isNull(form)) {
             return null;
         }
@@ -41,23 +42,34 @@ public class QuizMapperImpl implements QuizMapper {
                 .id(quiz.getId())
                 .name(quiz.getName())
                 .date(quiz.getDate())
-                .questions(mapQuestions(quiz.getQuestionAnswers()))
+                .questions(mapQuestions(quiz.getQuizQuestionAnswers()))
                 .build();
     }
-
-    private List<QuestionGeneratorDto> mapQuestions(final Set<QuestionAnswer> questionAnswers) {
-        if (CollectionUtils.isEmpty(questionAnswers)) {
+    private List<QuestionGeneratorDto> mapQuestions(final Set<QuizQuestionAnswer> quizQuestionAnswers) {
+        if (CollectionUtils.isEmpty(quizQuestionAnswers)) {
             return List.of();
         }
 
-        return questionAnswers.stream()
-                .map(qa -> QuestionGeneratorDto.builder()
-                        .id(qa.getId())
-                        .question(qa.getQuestion())
-                        .answer(qa.getAnswer())
-                        .distractors(qa.getDistractors().stream().map(Distractor::getDistractor).toList())
+        return quizQuestionAnswers.stream()
+                .map(qqa -> QuestionGeneratorDto.builder()
+                        .id(qqa.getQuestionAnswer().getId())
+                        .question(qqa.getQuestionAnswer().getQuestion())
+                        .answers(mapAnswers(qqa.getQuestionAnswer().getAnswer(), mapDistractorsToString(qqa.getQuestionAnswer().getDistractors())))
+                        .selectedAnswer(qqa.getSelectedAnswer())
+                        .isCorrect(qqa.getIsCorrect())
                         .build())
                 .toList();
+    }
+
+    private List<String> mapDistractorsToString(final Set<Distractor> distractors) {
+        return distractors.stream().map(Distractor::getDistractor).collect(Collectors.toList());
+    }
+
+    private List<String> mapAnswers(final String answer, final List<String> distractors) {
+        distractors.add(answer);
+        Collections.shuffle(distractors);
+
+        return distractors;
     }
 
 }

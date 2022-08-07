@@ -35,22 +35,25 @@ public class QuestionAnswerServiceImpl implements QuestionAnswerService {
             return List.of();
         }
 
-        final List<QuestionGeneratorDto> questions = new ArrayList<>();
+        final List<QuestionGeneratorDto> questionsAndAnswers = new ArrayList<>();
 
         response.forEach(r -> {
             final QuestionAnswer questionAnswer = questionAnswerRepository.save(questionAnswerMapper.map(r));
             final List<Distractor> distractors = distractorRepository.saveAll(distractorMapper.map(r, questionAnswer));
             final QuestionGeneratorDto dto = questionGeneratorMapper.map(questionAnswer, distractors);
-            questions.add(dto);
+            questionsAndAnswers.add(dto);
         });
 
-        return questions;
+        return questionsAndAnswers;
     }
 
     @Override
-    @Transactional
-    public void update(final Long quizId, final List<Long> questionAnswerIds) {
-        questionAnswerRepository.update(quizId, questionAnswerIds);
+    public List<QuestionGeneratorDto> getAllQuestionAnswers() {
+        final List<QuestionAnswer> questionsAndAnswers = questionAnswerRepository.getAll();
+
+        return questionsAndAnswers.stream()
+                .map(qa -> questionGeneratorMapper.map(qa, qa.getDistractors().stream().toList()))
+                .toList();
     }
 
 }

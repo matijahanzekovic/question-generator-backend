@@ -1,9 +1,6 @@
 package hr.tvz.hanzekovic.questiongenerator.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -14,7 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 public class QuestionAnswer implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -32,9 +30,5 @@ public class QuestionAnswer implements Serializable {
 
     @OneToMany(mappedBy = "questionAnswer", fetch = FetchType.LAZY)
     private Set<Distractor> distractors;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "quiz_id")
-    private Quiz quiz;
 
 }

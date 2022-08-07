@@ -11,7 +11,8 @@ public class QuestionGeneratorDto {
 
     private Long id;
     private String question;
-    private String answer;
-    private List<String> distractors;
+    private List<String> answers;
+    private String selectedAnswer;
+    private Boolean isCorrect;
 
 }

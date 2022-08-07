@@ -24,7 +24,7 @@ public class DistractorMapperImpl implements DistractorMapper {
                         .distractor(d)
                         .questionAnswer(questionAnswer)
                         .build())
-                .collect(Collectors.toList());
+                .toList();
     }
 
 }

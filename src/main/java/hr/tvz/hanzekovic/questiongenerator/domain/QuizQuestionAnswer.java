@@ -6,26 +6,31 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "distractor")
+@Table(name = "quiz_question_answer")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
 @Setter
-public class Distractor implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class QuizQuestionAnswer implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "distractor", length = 500)
-    private String distractor;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "quiz_id")
+    private Quiz quiz;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_answer_id")
     private QuestionAnswer questionAnswer;
+
+    @Column(name = "selected_answer", length = 500)
+    private String selectedAnswer;
+
+    @Column(name = "is_correct")
+    private Boolean isCorrect;
 
 }

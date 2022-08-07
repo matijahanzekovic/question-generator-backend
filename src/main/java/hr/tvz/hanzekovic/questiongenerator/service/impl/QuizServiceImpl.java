@@ -2,7 +2,7 @@ package hr.tvz.hanzekovic.questiongenerator.service.impl;
 
 import hr.tvz.hanzekovic.questiongenerator.domain.Quiz;
 import hr.tvz.hanzekovic.questiongenerator.dto.QuizDto;
-import hr.tvz.hanzekovic.questiongenerator.form.QuizForm;
+import hr.tvz.hanzekovic.questiongenerator.form.CreateQuizForm;
 import hr.tvz.hanzekovic.questiongenerator.mapper.impl.QuizMapperImpl;
 import hr.tvz.hanzekovic.questiongenerator.repository.QuizRepository;
 import hr.tvz.hanzekovic.questiongenerator.service.QuizService;
@@ -21,13 +21,13 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public Quiz save(final QuizForm form) {
-        return quizRepository.save(quizMapper.toEntity(form));
+    public Quiz save(final CreateQuizForm form) {
+        return quizRepository.saveAndFlush(quizMapper.toEntity(form));
     }
 
     @Override
     public QuizDto getQuizById(final Long id) {
-        final Quiz quiz = quizRepository.findById(id)
+        final Quiz quiz = quizRepository.findQuizById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Quiz with ID: %d was not found.", id)));
 
         return quizMapper.toDto(quiz);

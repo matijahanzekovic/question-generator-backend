@@ -7,7 +7,7 @@ import java.util.List;
 
 @Builder
 @Data
-public class QuizForm {
+public class CreateQuizForm {
 
     private String name;
     private List<Long> questionAnswerIds;
