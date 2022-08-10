@@ -14,5 +14,6 @@ public interface QuestionGeneratorFacade {
     QuizDto createQuiz(CreateQuizForm form);
     QuizDto solveQuiz(SolveQuizForm form);
     List<QuestionGeneratorDto> getAllQuestionAnswers();
+    List<QuizDto> getQuizList();
 
 }

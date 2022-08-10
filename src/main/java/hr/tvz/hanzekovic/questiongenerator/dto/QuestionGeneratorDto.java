@@ -12,6 +12,7 @@ public class QuestionGeneratorDto {
     private Long id;
     private String question;
     private List<String> answers;
+    private String correctAnswer;
     private String selectedAnswer;
     private Boolean isCorrect;
 

@@ -75,4 +75,9 @@ public class QuestionGeneratorFacadeImpl implements QuestionGeneratorFacade {
         return questionAnswerService.getAllQuestionAnswers();
     }
 
+    @Override
+    public List<QuizDto> getQuizList() {
+        return quizService.getQuizList();
+    }
+
 }

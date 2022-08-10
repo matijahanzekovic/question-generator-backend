@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -31,6 +32,13 @@ public class QuizServiceImpl implements QuizService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Quiz with ID: %d was not found.", id)));
 
         return quizMapper.toDto(quiz);
+    }
+
+    @Override
+    public List<QuizDto> getQuizList() {
+        return quizRepository.getAll().stream()
+                .map(quizMapper::toDto)
+                .toList();
     }
 
 }

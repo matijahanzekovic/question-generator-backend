@@ -55,6 +55,7 @@ public class QuizMapperImpl implements QuizMapper {
                         .id(qqa.getQuestionAnswer().getId())
                         .question(qqa.getQuestionAnswer().getQuestion())
                         .answers(mapAnswers(qqa.getQuestionAnswer().getAnswer(), mapDistractorsToString(qqa.getQuestionAnswer().getDistractors())))
+                        .correctAnswer(qqa.getQuestionAnswer().getAnswer())
                         .selectedAnswer(qqa.getSelectedAnswer())
                         .isCorrect(qqa.getIsCorrect())
                         .build())

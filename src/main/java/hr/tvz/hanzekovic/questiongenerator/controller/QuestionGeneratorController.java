@@ -14,6 +14,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
+@CrossOrigin(origins = "http://localhost:3000")
 public class QuestionGeneratorController {
 
     private final QuestionGeneratorFacade facade;
@@ -28,9 +29,14 @@ public class QuestionGeneratorController {
         return ResponseEntity.ok(facade.getQuiz(id));
     }
 
-    @GetMapping("/get-all")
+    @GetMapping("/get-all-questions")
     public ResponseEntity<List<QuestionGeneratorDto>> getAllQuestionAnswers() {
         return ResponseEntity.ok(facade.getAllQuestionAnswers());
+    }
+
+    @GetMapping("/get-quiz-list")
+    public ResponseEntity<List<QuizDto>> getQuizList() {
+        return ResponseEntity.ok(facade.getQuizList());
     }
 
     @PostMapping("/create-quiz")
