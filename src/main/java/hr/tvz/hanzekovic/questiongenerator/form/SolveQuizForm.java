@@ -3,6 +3,7 @@ package hr.tvz.hanzekovic.questiongenerator.form;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Map;
 
 @Builder
@@ -10,6 +11,6 @@ import java.util.Map;
 public class SolveQuizForm {
 
     private Long quizId;
-    private Map<Long, String> selectedAnswers;
+    private List<SelectedAnswersForm> selectedAnswers;
 
 }

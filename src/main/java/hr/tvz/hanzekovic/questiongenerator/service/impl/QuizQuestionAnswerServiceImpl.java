@@ -26,16 +26,27 @@ public class QuizQuestionAnswerServiceImpl implements QuizQuestionAnswerService 
     @Override
     @Transactional
     public void solveQuiz(final SolveQuizForm form) {
-        form.getSelectedAnswers().forEach((id, answer) -> {
+        form.getSelectedAnswers().forEach(sa -> {
             final QuizQuestionAnswer quizQuestionAnswer = quizQuestionAnswerRepository
-                    .getByQuizIdAndQuestionAnswerId(form.getQuizId(), id)
+                    .getByQuizIdAndQuestionAnswerId(form.getQuizId(), sa.getId())
                     .orElseThrow(() -> new EntityNotFoundException(
                             String.format("Quiz question answer for quizId: %d and questionAnswerId: %d was not found",
-                                    form.getQuizId(), id)));
+                                    form.getQuizId(), sa.getId())));
 
-            final boolean isCorrect = quizQuestionAnswer.getQuestionAnswer().getAnswer().equals(answer);
-            quizQuestionAnswerRepository.update(form.getQuizId(), id, answer, isCorrect);
+            final boolean isCorrect = quizQuestionAnswer.getQuestionAnswer().getAnswer().equals(sa.getAnswer());
+            quizQuestionAnswerRepository.update(form.getQuizId(), sa.getId(), sa.getAnswer(), isCorrect);
         });
+
+//        form.getSelectedAnswers().forEach((id, answer) -> {
+//            final QuizQuestionAnswer quizQuestionAnswer = quizQuestionAnswerRepository
+//                    .getByQuizIdAndQuestionAnswerId(form.getQuizId(), id)
+//                    .orElseThrow(() -> new EntityNotFoundException(
+//                            String.format("Quiz question answer for quizId: %d and questionAnswerId: %d was not found",
+//                                    form.getQuizId(), id)));
+//
+//            final boolean isCorrect = quizQuestionAnswer.getQuestionAnswer().getAnswer().equals(answer);
+//            quizQuestionAnswerRepository.update(form.getQuizId(), id, answer, isCorrect);
+//        });
     }
 
 }
